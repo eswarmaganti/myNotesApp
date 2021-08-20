@@ -18,6 +18,10 @@ import AddNotesScreen from "./screens/AddNotesScreen";
 import EditNotesScreen from "./screens/EditNotesScreen";
 import UpdateProfileScreen from "./screens/UpdateProfileScreen";
 import UpdatePasswordScreen from "./screens/UpdatePasswordScreen";
+import ProtectedRoute from "./hrc/ProtectedRoute";
+import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
+
 const theme = createTheme({
   typography: {
     fontFamily: "Poppins",
@@ -51,17 +55,27 @@ const App = () => {
             <Route exact path="/" component={HomeScreen} />
             <Route path="/login" component={LoginScreen} />
             <Route path="/signup" component={SignupScreen} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/notes/create" component={AddNotesScreen} />
-            <Route
-              path="/user/settings/updatePassword"
+            <Route path="/forgotPassword" component={ForgotPasswordScreen} />
+            <Route path="/resetPassword" component={ResetPasswordScreen} />
+
+            {/* Protected App Routes */}
+            <ProtectedRoute path="/app/dashboard" component={Dashboard} />
+            <ProtectedRoute
+              path="/app/notes/create"
+              component={AddNotesScreen}
+            />
+            <ProtectedRoute
+              path="/app/user/settings/updatePassword"
               component={UpdatePasswordScreen}
             />
-            <Route
-              path="/user/settings/updateProfile"
+            <ProtectedRoute
+              path="/app/user/settings/updateProfile"
               component={UpdateProfileScreen}
             />
-            <Route path="/notes/edit/:id" component={EditNotesScreen} />
+            <ProtectedRoute
+              path="/app/notes/edit/:id"
+              component={EditNotesScreen}
+            />
           </Switch>
         </Container>
         <Footer />

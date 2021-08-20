@@ -21,6 +21,9 @@ import {
 } from "@material-ui/icons";
 import { indigo } from "@material-ui/core/colors";
 import { useHistory, useLocation } from "react-router-dom";
+import logoutIcon from "../assets/logouticon.svg";
+import { logout } from "../actions/userActions";
+import { useDispatch } from "react-redux";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => {
   return {
@@ -38,8 +41,6 @@ const useStyles = makeStyles((theme) => {
       fontWeight: 500,
     },
     listItem: {
-      paddingLeft: 5,
-      paddingRight: 5,
       borderRight: `4px solid transparent`,
       transition: "background-color 300ms ease-out",
       "&:hover": {
@@ -48,8 +49,6 @@ const useStyles = makeStyles((theme) => {
       },
     },
     listItemActive: {
-      paddingLeft: 5,
-      paddingRight: 5,
       backgroundColor: indigo[100],
       borderRight: `4px solid ${theme.palette.primary.main}`,
       "&:hover": {
@@ -85,29 +84,38 @@ const SideDrawer = () => {
 
   const [open, setOpen] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleClick = () => {
     setOpen(!open);
   };
+
+  //logout handler
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
+
   const drawerItems = [
     {
       text: "Dashboard",
       icon: <DashboardRounded />,
-      link: "/dashboard",
+      link: "/app/dashboard",
     },
     {
       text: "Add Notes",
       icon: <PostAddRounded />,
-      link: "/notes/create",
+      link: "/app/notes/create",
     },
     {
       text: "Settings",
       icon: <SettingsRounded />,
-      link: "/user/settings",
+      link: "/app/user/settings",
       childern: [
         {
           text: "Update Password",
           icon: <VpnKeyRounded />,
-          link: "/user/settings/updatePassword",
+          link: "/app/user/settings/updatePassword",
         },
         {
           text: "Update Profile",
@@ -125,7 +133,7 @@ const SideDrawer = () => {
               </g>
             </SvgIcon>
           ),
-          link: "/user/settings/updateProfile",
+          link: "/app/user/settings/updateProfile",
         },
       ],
     },
@@ -217,6 +225,14 @@ const SideDrawer = () => {
             );
           }
         })}
+        <ListItem onClick={logoutHandler} button className={classes.listItem}>
+          <ListItemIcon>
+            <img src={logoutIcon} />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography className={classes.listItemText}>Logout</Typography>
+          </ListItemText>
+        </ListItem>
       </List>
     </Drawer>
   );

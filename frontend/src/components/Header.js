@@ -8,6 +8,9 @@ import {
   Typography,
   Container,
   SvgIcon,
+  IconButton,
+  Avatar,
+  TextField,
 } from "@material-ui/core";
 import {
   HomeRounded,
@@ -15,8 +18,8 @@ import {
   PersonRounded,
   PersonAddRounded,
 } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
-
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => {
   return {
     brand: {
@@ -25,6 +28,8 @@ const useStyles = makeStyles((theme) => {
     },
     link: {
       margin: `0 ${theme.spacing(1)}px`,
+      borderBottom: "2px solid transparent",
+      borderRadius: 0,
     },
     icon: {
       height: "inherit",
@@ -36,13 +41,49 @@ const useStyles = makeStyles((theme) => {
     appbar: {
       zIndex: theme.zIndex.drawer + 1,
     },
+    avatar: {
+      marginLeft: theme.spacing(1),
+      backgroundColor: theme.palette.primary.main,
+      color: "inherit",
+      border: "1px solid white",
+      cursor: "pointer",
+      transition: "background-color .5s ease",
+      boxShadow: `2px 2px 10px ${theme.palette.primary.dark} `,
+      "&:hover": {
+        backgroundColor: theme.palette.primary.dark,
+      },
+    },
+    navLinks: {
+      display: "flex",
+    },
+    activeLink: {
+      borderRadius: 0,
+      margin: `0 ${theme.spacing(1)}px`,
+      borderBottom: "2px solid white",
+    },
+    input: {
+      color: "white",
+    },
   };
 });
 
 const Header = () => {
+  const { pathname } = useLocation();
   const history = useHistory();
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo, error } = userLogin;
+
+  const getAvatarText = () => {
+    const nameSplit = userInfo.name.split(" ");
+    if (nameSplit.length >= 2) {
+      return "" + nameSplit[0][0] + nameSplit[1][0] + "".toUpperCase();
+    } else {
+      return nameSplit[0].slice(0, 2).toUpperCase();
+    }
+  };
   return (
     <AppBar
       position="sticky"
@@ -68,38 +109,48 @@ const Header = () => {
             My NotesApp
           </Typography>
         </Box>
-        <Box>
-          <Button
-            color="inherit"
-            className={classes.link}
-            endIcon={<HomeRounded />}
-            onClick={() => history.push("/")}
-          >
-            home
-          </Button>
-          <Button
-            color="inherit"
-            className={classes.link}
-            endIcon={<PersonRounded />}
-            onClick={() => history.push("/login")}
-          >
-            Login
-          </Button>
-          <Button
-            color="inherit"
-            className={classes.link}
-            endIcon={<PersonAddRounded />}
-            onClick={() => history.push("/signup")}
-          >
-            signup
-          </Button>
-          <Button
-            color="inherit"
-            className={classes.link}
-            onClick={() => history.push("/dashboard")}
-          >
-            Eswar Maganti
-          </Button>
+        <Box className={classes.navLinks}>
+          {userInfo ? (
+            <>
+              <Avatar
+                onClick={() => history.push("/app/dashboard")}
+                className={classes.avatar}
+              >
+                {getAvatarText()}
+              </Avatar>
+            </>
+          ) : (
+            <>
+              <Button
+                color="inherit"
+                className={pathname === "/" ? classes.activeLink : classes.link}
+                endIcon={<HomeRounded />}
+                onClick={() => history.push("/")}
+              >
+                home
+              </Button>
+              <Button
+                color="inherit"
+                className={
+                  pathname === "/login" ? classes.activeLink : classes.link
+                }
+                endIcon={<PersonRounded />}
+                onClick={() => history.push("/login")}
+              >
+                Login
+              </Button>
+              <Button
+                color="inherit"
+                className={
+                  pathname === "/signup" ? classes.activeLink : classes.link
+                }
+                endIcon={<PersonAddRounded />}
+                onClick={() => history.push("/signup")}
+              >
+                signup
+              </Button>
+            </>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

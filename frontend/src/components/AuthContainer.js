@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { Box, Typography, Grid } from "@material-ui/core";
-import loginsvg from "../assets/login.svg";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const FormContainer = ({ title, subTitle, children }) => {
+const FormContainer = ({ title, subTitle, image, children }) => {
   const classes = useStyles();
   return (
     <Grid container className={classes.authScreen}>
@@ -52,7 +51,7 @@ const FormContainer = ({ title, subTitle, children }) => {
         {children}
       </Grid>
       <Grid item className={classes.imageSection} sm={6} xs={12}>
-        <img src={loginsvg} className={classes.image} />
+        <img src={image} className={classes.image} />
       </Grid>
     </Grid>
   );

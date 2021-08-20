@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const HomeScreen = () => {
+const HomeScreen = ({ history }) => {
   const classes = useStyles();
   return (
     <Grid container className={classes.container}>
@@ -50,6 +50,7 @@ const HomeScreen = () => {
             color="primary"
             variant="contained"
             endIcon={<PersonAddRounded />}
+            onClick={() => history.push("/signup")}
           >
             Create a New Account
           </Button>

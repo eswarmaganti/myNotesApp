@@ -49,99 +49,101 @@ const NotesForm = ({
   titleErrMsg,
   setTitleErr,
   setDescriptionErr,
+  setDescriptionErrMsg,
+  setTitleErrMsg,
+  loading,
 }) => {
   const classes = useStyles();
   return (
-    <>
-      <Typography variant="h6" gutterBottom>
-        Create a New Note
-      </Typography>
-      <Box className={classes.form}>
-        <form noValidate onSubmit={handler}>
-          <TextField
-            type="text"
-            variant="filled"
-            required
-            fullWidth
-            label="Notes Title"
-            className={classes.inputFeild}
-            value={title}
+    <Box className={classes.form}>
+      <form noValidate onSubmit={handler}>
+        <TextField
+          type="text"
+          variant="filled"
+          required
+          fullWidth
+          label="Notes Title"
+          className={classes.inputFeild}
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setTitleErr(false);
+            setTitleErrMsg("");
+          }}
+          error={titleErr}
+          helperText={titleErrMsg}
+          disabled={loading}
+        />
+        <TextField
+          type="text"
+          variant="filled"
+          required
+          fullWidth
+          label="Notes Descrition"
+          multiline
+          rows={10}
+          className={classes.inputFeild}
+          value={description}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            setDescriptionErr(false);
+            setDescriptionErrMsg("");
+          }}
+          error={descriptionErr}
+          helperText={descriptionErrMsg}
+          disabled={loading}
+        />
+        <FormControl component="fieldset" className={classes.inputFeild}>
+          <FormLabel component="legend">Gender</FormLabel>
+          <RadioGroup
+            value={categoury}
             onChange={(e) => {
-              setTitle(e.target.value);
-              setTitleErr(false);
+              setCategoury(e.target.value);
             }}
-            error={titleErr}
-            helperText={titleErrMsg}
-          />
-          <TextField
-            type="text"
-            variant="filled"
-            required
-            fullWidth
-            label="Notes Descrition"
-            multiline
-            rows={4}
-            className={classes.inputFeild}
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-              setDescriptionErr(false);
-            }}
-            error={descriptionErr}
-            helperText={descriptionErrMsg}
-          />
-          <FormControl component="fieldset" className={classes.inputFeild}>
-            <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup
-              value={categoury}
-              onChange={(e) => {
-                setCategoury(e.target.value);
-              }}
-              className={classes.radioGroup}
-            >
-              <FormControlLabel
-                value="todos"
-                control={<Radio color="primary" />}
-                label="Todos"
-              />
-              <FormControlLabel
-                value="work"
-                control={<Radio color="primary" />}
-                label="Work"
-                className={classes.radio}
-              />
-              <FormControlLabel
-                value="remainder"
-                control={<Radio color="primary" />}
-                label="Remainder"
-                className={classes.radio}
-              />
-              <FormControlLabel
-                value="money"
-                control={<Radio color="primary" />}
-                label="Money"
-                className={classes.radio}
-              />
-              <FormControlLabel
-                value="Others"
-                control={<Radio color="primary" />}
-                label="Others"
-                className={classes.radio}
-              />
-            </RadioGroup>
-          </FormControl>
-          <Button
-            color="primary"
-            type="submit"
-            variant="contained"
-            endIcon={<SendRounded />}
-            size="large"
+            className={classes.radioGroup}
           >
-            Save Notes
-          </Button>
-        </form>
-      </Box>
-    </>
+            <FormControlLabel
+              value="todos"
+              control={<Radio color="primary" disabled={loading} />}
+              label="Todos"
+            />
+            <FormControlLabel
+              value="work"
+              control={<Radio color="primary" disabled={loading} />}
+              label="Work"
+              className={classes.radio}
+            />
+            <FormControlLabel
+              value="remainders"
+              control={<Radio color="primary" disabled={loading} />}
+              label="Remainders"
+              className={classes.radio}
+            />
+            <FormControlLabel
+              value="money"
+              control={<Radio color="primary" disabled={loading} />}
+              label="Money"
+              className={classes.radio}
+            />
+            <FormControlLabel
+              value="Others"
+              control={<Radio color="primary" disabled={loading} />}
+              label="Others"
+              className={classes.radio}
+            />
+          </RadioGroup>
+        </FormControl>
+        <Button
+          color="primary"
+          type="submit"
+          variant="contained"
+          endIcon={<SendRounded />}
+          disabled={loading}
+        >
+          Save Notes
+        </Button>
+      </form>
+    </Box>
   );
 };
 
