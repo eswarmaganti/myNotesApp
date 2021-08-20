@@ -35,7 +35,7 @@ const HomeScreen = ({ history }) => {
   const classes = useStyles();
   return (
     <Grid container className={classes.container}>
-      <Grid sm={12} md={6} className={classes.heroContainer}>
+      <Grid item sm={12} md={6} className={classes.heroContainer}>
         <Box>
           <Typography variant="h3" gutterBottom color="textPrimary">
             Digital place to manage your notes any time and anywhere.
@@ -56,7 +56,7 @@ const HomeScreen = ({ history }) => {
           </Button>
         </Box>
       </Grid>
-      <Grid sm={12} md={6} className={classes.heroImageSection}>
+      <Grid item sm={12} md={6} className={classes.heroImageSection}>
         <img src={heroImg} alt="image" className={classes.heroImage} />
       </Grid>
     </Grid>

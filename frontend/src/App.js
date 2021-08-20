@@ -56,7 +56,10 @@ const App = () => {
             <Route path="/login" component={LoginScreen} />
             <Route path="/signup" component={SignupScreen} />
             <Route path="/forgotPassword" component={ForgotPasswordScreen} />
-            <Route path="/resetPassword" component={ResetPasswordScreen} />
+            <Route
+              path="/resetPassword/:email"
+              component={ResetPasswordScreen}
+            />
 
             {/* Protected App Routes */}
             <ProtectedRoute path="/app/dashboard" component={Dashboard} />
@@ -78,7 +81,7 @@ const App = () => {
             />
           </Switch>
         </Container>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </ThemeProvider>
   );

@@ -27,6 +27,8 @@ import {
   USER_RESET_PASS_FAIL,
   USER_RESET_PASS_REQUEST,
   USER_RESET_PASS_SUCCESS,
+  CLEAR_RESET_PASS,
+  CLEAR_VERIFICATION_CODE,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -188,35 +190,34 @@ export const getVerificationCode = (email) => async (dispatch) => {
   }
 };
 
-export const validateVerificationCode =
-  (verificationCode) => async (dispatch) => {
-    try {
-      dispatch({ type: USER_VALIDATE_VC_REQUEST });
+export const validateVerificationCode = (email, token) => async (dispatch) => {
+  try {
+    dispatch({ type: USER_VALIDATE_VC_REQUEST });
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const { data } = await axios.post(
-        "/api/user/validateVC",
-        { verificationCode },
-        config
-      );
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      "/api/user/validateVC",
+      { email, token },
+      config
+    );
 
-      dispatch({ type: USER_VALIDATE_VC_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: USER_VALIDATE_VC_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
-  };
+    dispatch({ type: USER_VALIDATE_VC_SUCCESS, payload: data, email: email });
+  } catch (error) {
+    dispatch({
+      type: USER_VALIDATE_VC_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
 
-export const resetPassword = (email, password) => async (dispatch) => {
+export const resetPasswordAction = (email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_RESET_PASS_REQUEST });
 
@@ -226,7 +227,7 @@ export const resetPassword = (email, password) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      "/api/user/validateVC",
+      "/api/user/resetPassword",
       { email, password },
       config
     );
@@ -251,4 +252,9 @@ export const clearUpdateUserPassword = () => (dispatch) => {
 };
 export const clearUpdateUserProfile = () => (dispatch) => {
   dispatch({ type: UPDATE_USER_PROFILE_CLEAR });
+};
+
+export const clearVCandResetPass = () => (dispatch) => {
+  dispatch({ type: CLEAR_VERIFICATION_CODE });
+  dispatch({ type: CLEAR_RESET_PASS });
 };

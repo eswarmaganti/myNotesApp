@@ -43,7 +43,7 @@ const LoginScreen = () => {
 
   //state hooks for login
   const [email, setEmail] = useState("maganti.ek@gmail.com");
-  const [password, setPassword] = useState("123456");
+  const [password, setPassword] = useState("kittu0312");
 
   const [emailErr, setEmailErr] = useState(false);
   const [passwordErr, setPasswordErr] = useState(false);

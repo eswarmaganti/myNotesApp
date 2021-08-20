@@ -5,6 +5,7 @@ import { notFound, errroHanlder } from "./middleware/errorMiddlewareHandler.js";
 import connectDb from "./config/connectDB.js";
 import userRouter from "./routes/userRouter.js";
 import notesRouter from "./routes/notesRouter.js";
+import { tokenSchedular } from "./utils/TokenSchedular.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,8 @@ connectDb();
 
 app.use(express.json());
 
+//token schedular
+tokenSchedular();
 //user routes
 app.use("/api/user", userRouter);
 

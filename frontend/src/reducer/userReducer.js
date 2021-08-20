@@ -25,6 +25,8 @@ import {
   USER_RESET_PASS_SUCCESS,
   USER_RESET_PASS_REQUEST,
   USER_RESET_PASS_FAIL,
+  CLEAR_VERIFICATION_CODE,
+  CLEAR_RESET_PASS,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -88,20 +90,35 @@ export const updateUserPasswordReducer = (state = {}, action) => {
   }
 };
 
-export const verificationCodeReducer = (state = {}, action) => {
+export const verificationCodeReducer = (
+  state = { vcSent: false, vcVerified: false },
+  action
+) => {
   switch (action.type) {
     case USER_VERIFICATIONCODE_REQUEST:
-      return { loading: true, email: action.payload };
-    case USER_VERIFICATIONCODE_SUCCESS:
-      return { loading: false, message: action.payload, vcSent: true };
-    case USER_VERIFICATIONCODE_FAIL:
-      return { loading: false, error: action.payload };
-    case USER_VALIDATE_VC_REQUEST:
       return { loading: true };
+    case USER_VERIFICATIONCODE_SUCCESS:
+      return {
+        loading: false,
+        message: action.payload,
+        vcSent: true,
+      };
+    case USER_VERIFICATIONCODE_FAIL:
+      return { loading: false, error: action.payload, vcSent: false };
+    case USER_VALIDATE_VC_REQUEST:
+      return { loading: true, vcSent: true };
     case USER_VALIDATE_VC_SUCCESS:
-      return { loading: false, message: action.payload, vcVerified: true };
+      return {
+        loading: false,
+        message: action.payload,
+        vcVerified: true,
+        vcSent: true,
+        vcEmail: action.email,
+      };
     case USER_VALIDATE_VC_FAIL:
       return { loading: false, error: action.payload };
+    case CLEAR_VERIFICATION_CODE:
+      return { vcSent: false, vcVerified: false };
     default:
       return state;
   }
@@ -115,6 +132,8 @@ export const resetPasswordReducer = (state = {}, action) => {
       return { loading: false, message: action.payload };
     case USER_RESET_PASS_FAIL:
       return { loading: false, error: action.payload };
+    case CLEAR_RESET_PASS:
+      return {};
     default:
       return state;
   }
