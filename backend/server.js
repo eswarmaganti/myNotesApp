@@ -5,7 +5,7 @@ import { notFound, errroHanlder } from "./middleware/errorMiddlewareHandler.js";
 import connectDb from "./config/connectDB.js";
 import userRouter from "./routes/userRouter.js";
 import notesRouter from "./routes/notesRouter.js";
-
+import path from "path";
 dotenv.config();
 const app = express();
 
@@ -28,7 +28,7 @@ app.use(notFound);
 app.use(errroHanlder);
 
 //to serve static files
-const path = require("path");
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 app.use(express.static(path.join(__dirname, "frontend", "build")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
