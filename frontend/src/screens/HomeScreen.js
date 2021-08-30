@@ -6,7 +6,7 @@ import heroImg from "../assets/hero.svg";
 const useStyles = makeStyles((theme) => {
   return {
     container: {
-      minHeight: "inherit",
+      height: "80vh !important",
     },
     heroContainer: {
       paddingRight: 20,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Drawer,
   List,
@@ -138,7 +138,6 @@ const SideDrawer = () => {
       ],
     },
   ];
-  console.log(open);
   return (
     <Drawer
       variant="permanent"
@@ -227,7 +226,7 @@ const SideDrawer = () => {
         })}
         <ListItem onClick={logoutHandler} button className={classes.listItem}>
           <ListItemIcon>
-            <img src={logoutIcon} />
+            <img src={logoutIcon} alt="icon" />
           </ListItemIcon>
           <ListItemText>
             <Typography className={classes.listItemText}>Logout</Typography>

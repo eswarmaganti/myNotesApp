@@ -51,7 +51,7 @@ const FormContainer = ({ title, subTitle, image, children }) => {
         {children}
       </Grid>
       <Grid item className={classes.imageSection} sm={6} xs={12}>
-        <img src={image} className={classes.image} />
+        <img src={image} alt="AuthImage" className={classes.image} />
       </Grid>
     </Grid>
   );

@@ -16,6 +16,7 @@ import {
   editNotesReducer,
   notesLoadReducer,
   deleteNotesReducer,
+  pinNotesReducer,
 } from "./reducer/notesReducer";
 
 const reducer = combineReducers({
@@ -29,6 +30,7 @@ const reducer = combineReducers({
   updateUserProfile: updateUserProfileReducer,
   verificationCode: verificationCodeReducer,
   resetPassword: resetPasswordReducer,
+  pinNotes: pinNotesReducer,
 });
 
 //getting data from localstorage

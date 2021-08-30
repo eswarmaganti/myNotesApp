@@ -21,7 +21,7 @@ import UpdatePasswordScreen from "./screens/UpdatePasswordScreen";
 import ProtectedRoute from "./hrc/ProtectedRoute";
 import ForgotPasswordScreen from "./screens/ForgotPasswordScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
-
+import UnProtectedRoute from "./hrc/UnProtectedRoute";
 const theme = createTheme({
   typography: {
     fontFamily: "Poppins",
@@ -39,9 +39,7 @@ const theme = createTheme({
 
 const useStyles = makeStyles((theme) => {
   return {
-    mainContainer: {
-      minHeight: "86.5vh",
-    },
+    mainContainer: { minHeight: "85.5vh" },
   };
 });
 const App = () => {
@@ -53,10 +51,13 @@ const App = () => {
         <Container className={classes.mainContainer}>
           <Switch>
             <Route exact path="/" component={HomeScreen} />
-            <Route path="/login" component={LoginScreen} />
-            <Route path="/signup" component={SignupScreen} />
-            <Route path="/forgotPassword" component={ForgotPasswordScreen} />
-            <Route
+            <UnProtectedRoute path="/login" component={LoginScreen} />
+            <UnProtectedRoute path="/signup" component={SignupScreen} />
+            <UnProtectedRoute
+              path="/forgotPassword"
+              component={ForgotPasswordScreen}
+            />
+            <UnProtectedRoute
               path="/resetPassword/:email"
               component={ResetPasswordScreen}
             />
@@ -81,7 +82,7 @@ const App = () => {
             />
           </Switch>
         </Container>
-        {/* <Footer /> */}
+        <Footer />
       </Router>
     </ThemeProvider>
   );

@@ -5,7 +5,6 @@ import { SendRounded } from "@material-ui/icons";
 import resetpassImg from "../assets/resetpass.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearVCandResetPass,
   getVerificationCode,
   validateVerificationCode,
 } from "../actions/userActions";

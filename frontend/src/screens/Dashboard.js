@@ -6,7 +6,7 @@ import AppContainer from "../components/AppContainer";
 import ProgressBar from "../components/ProgressBar";
 import AlertMessage from "../components/AlertMessage";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteNotes, getNotes } from "../actions/notesActions";
+import { getNotes } from "../actions/notesActions";
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -20,11 +20,11 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const [deleteNotesLoading, setDeleteNotesLoading] = useState(false);
+  const [pinNotesLoading, setPinNotesLoading] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
   const notesLoaded = useSelector((state) => state.notesLoaded);
-  const { loading, error, notes } = notesLoaded;
-  const notesDeleted = useSelector((state) => state.notesDeleted);
+  const { loading, error, notesOthers, notesPinned } = notesLoaded;
   const breakpointColumnsObj = {
     default: 3,
     700: 2,
@@ -38,28 +38,64 @@ const Dashboard = () => {
   return (
     <AppContainer>
       <>
-        {(loading || deleteNotesLoading) && <ProgressBar />}
-        {/* <Typography variant="h6" gutterBottom>
-          My Notes
-        </Typography> */}
-        {notes && (
-          <Box className={classes.paddingY}>
-            <Masonry
-              breakpointCols={breakpointColumnsObj}
-              className="my-masonry-grid"
-              columnClassName="my-masonry-grid_column"
-            >
-              {notes.map((note) => (
-                <NotesCard
-                  note={note}
-                  key={note._id}
-                  setDeleteNotesLoading={setDeleteNotesLoading}
-                />
-              ))}
-            </Masonry>
-          </Box>
-        )}
+        {(loading || deleteNotesLoading || pinNotesLoading) && <ProgressBar />}
         {error && <AlertMessage severity="error" text={error} />}
+        {!loading && !notesPinned.length && !notesOthers.length ? (
+          <Typography gutterBottom>No Notes created yet!!</Typography>
+        ) : (
+          <>
+            {!loading && (
+              <>
+                {notesPinned.length ? (
+                  <Box className={classes.paddingY}>
+                    <Typography gutterBottom>PINNED NOTES</Typography>
+                    <Masonry
+                      breakpointCols={breakpointColumnsObj}
+                      className="my-masonry-grid"
+                      columnClassName="my-masonry-grid_column"
+                    >
+                      {notesPinned.map((note) => (
+                        <NotesCard
+                          note={note}
+                          key={note._id}
+                          setDeleteNotesLoading={setDeleteNotesLoading}
+                          setPinNotesLoading={setPinNotesLoading}
+                        />
+                      ))}
+                    </Masonry>
+                  </Box>
+                ) : (
+                  <Typography gutterBottom>NO PINNED NOTES</Typography>
+                )}
+              </>
+            )}
+            {!loading && (
+              <>
+                {notesOthers.length ? (
+                  <Box className={classes.paddingY}>
+                    <Typography gutterBottom>OTHERS</Typography>
+                    <Masonry
+                      breakpointCols={breakpointColumnsObj}
+                      className="my-masonry-grid"
+                      columnClassName="my-masonry-grid_column"
+                    >
+                      {notesOthers.map((note) => (
+                        <NotesCard
+                          note={note}
+                          key={note._id}
+                          setDeleteNotesLoading={setDeleteNotesLoading}
+                          setPinNotesLoading={setPinNotesLoading}
+                        />
+                      ))}
+                    </Masonry>
+                  </Box>
+                ) : (
+                  <Typography gutterBottom>NO OTHER NOTES </Typography>
+                )}
+              </>
+            )}
+          </>
+        )}
       </>
     </AppContainer>
   );

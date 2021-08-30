@@ -6,20 +6,16 @@ import {
   makeStyles,
   Toolbar,
   Typography,
-  Container,
   SvgIcon,
-  IconButton,
   Avatar,
-  TextField,
 } from "@material-ui/core";
 import {
   HomeRounded,
-  Notes,
   PersonRounded,
   PersonAddRounded,
 } from "@material-ui/icons";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => {
   return {
     brand: {
@@ -71,10 +67,8 @@ const Header = () => {
   const { pathname } = useLocation();
   const history = useHistory();
   const classes = useStyles();
-
-  const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo, error } = userLogin;
+  const { userInfo } = userLogin;
 
   const getAvatarText = () => {
     const nameSplit = userInfo.name.split(" ");

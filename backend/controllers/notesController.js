@@ -4,9 +4,10 @@ import asyncHandler from "express-async-handler";
 export const getAllNotes = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const notes = await Notes.find({ user: _id });
-  if (notes) {
-    res.json(notes);
+  const notesPinned = await Notes.find({ user: _id, isPinned: true });
+  const notesOthers = await Notes.find({ user: _id, isPinned: false });
+  if (notesPinned || notesOthers) {
+    res.json({ notesOthers, notesPinned });
   } else {
     res.status(404);
     throw new Error("No Notes Found");
@@ -65,5 +66,29 @@ export const deleteNotes = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("No Notes found for deletion");
+  }
+});
+
+export const pinNotes = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const notes = await Notes.findById({ _id: id });
+  //update Notes
+  if (notes) {
+    const { isPinned, _id } = notes;
+
+    const updatedNotes = await Notes.findByIdAndUpdate(
+      { _id },
+      { isPinned: !isPinned }
+    );
+    if (updateNotes) {
+      res.status(200).json("Notes Updated Successfully!!");
+    } else {
+      res.status(500);
+      throw new Error("Unable to update notes, please try again later!!");
+    }
+  } else {
+    res.status(400);
+    throw new Error("No Notes Found for given ID!!");
   }
 });

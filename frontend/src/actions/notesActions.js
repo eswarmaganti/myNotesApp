@@ -18,6 +18,9 @@ import {
   DELETE_NOTES_FAIL,
   DELETE_NOTES_REQUEST,
   DELETE_NOTES_SUCCESS,
+  PIN_NOTES_REQUEST,
+  PIN_NOTES_FAIL,
+  PIN_NOTES_SUCCESS,
 } from "../constants/notesConstants";
 
 export const getNotes = () => async (dispatch) => {
@@ -33,7 +36,7 @@ export const getNotes = () => async (dispatch) => {
     };
 
     const { data } = await axios.get("/api/notes", config);
-
+    console.log(data);
     dispatch({ type: LOAD_NOTES_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -141,7 +144,7 @@ export const getNoteById = (id) => async (dispatch) => {
   }
 };
 
-export const deleteNotes = (id) => async (dispatch, getState) => {
+export const deleteNotes = (id, isPinned) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_NOTES_REQUEST });
 
@@ -152,17 +155,116 @@ export const deleteNotes = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/notes/${id}`, config);
+    await axios.delete(`/api/notes/${id}`, config);
     dispatch({
       type: DELETE_NOTES_SUCCESS,
       payload: "Notes Deleted Successfully",
     });
-    const notes = getState().notesLoaded.notes;
-    const filteredNotes = notes.filter((note) => note._id !== id);
-    dispatch({ type: LOAD_NOTES_SUCCESS, payload: filteredNotes });
+    if (isPinned) {
+      const notesPinned = getState().notesLoaded.notesPinned;
+      const filteredNotes = notesPinned.filter((note) => note._id !== id);
+      dispatch({
+        type: LOAD_NOTES_SUCCESS,
+        payload: {
+          notesPinned: filteredNotes,
+          notesOthers: getState().notesLoaded.notesOthers,
+        },
+      });
+    } else {
+      const notesOthers = getState().notesLoaded.notesOthers;
+      const filteredNotes = notesOthers.filter((note) => note._id !== id);
+      dispatch({
+        type: LOAD_NOTES_SUCCESS,
+        payload: {
+          notesPinned: getState().notesLoaded.notesPinned,
+          notesOthers: filteredNotes,
+        },
+      });
+    }
   } catch (error) {
     dispatch({
       type: DELETE_NOTES_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const pinNotesAction = (id, isPinned) => async (dispatch, getState) => {
+  let tempNote = {};
+  let tempNewPinnedNotes = [];
+  let tempNewUnPinnedNotes = [];
+  try {
+    dispatch({ type: PIN_NOTES_REQUEST });
+
+    const { token } = JSON.parse(localStorage.getItem("notesAppUserInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.patch(`/api/notes/pin/${id}`, {}, config);
+
+    dispatch({ type: PIN_NOTES_SUCCESS, message: data });
+
+    if (isPinned) {
+      //get the note which is pinned currently
+      tempNote = getState().notesLoaded.notesPinned.find(
+        (note) => note._id === id
+      );
+      //make is as unpinned
+      tempNote.isPinned = !tempNote.isPinned;
+
+      //filter the newPinnedNotes by deleting the current tempnote
+      tempNewPinnedNotes = getState().notesLoaded.notesPinned.filter(
+        (note) => note._id !== id
+      );
+
+      //push the new pinned note i.e; tempNote to OtherNotes
+      tempNewUnPinnedNotes = getState().notesLoaded.notesOthers;
+      tempNewUnPinnedNotes.push(tempNote);
+      ///prepare the payload
+      const payload = {
+        notesPinned: tempNewPinnedNotes,
+        notesOthers: tempNewUnPinnedNotes,
+      };
+      //dispatch the LOAD_NOTES ACTION
+      dispatch({
+        type: LOAD_NOTES_SUCCESS,
+        payload: payload,
+      });
+    } else {
+      //get the note which is unpinned currently
+      tempNote = getState().notesLoaded.notesOthers.find(
+        (note) => note._id === id
+      );
+      //make is as pinned
+      tempNote.isPinned = !tempNote.isPinned;
+      //filter the newUnPinnedNotes by deleting the current tempnote
+      tempNewUnPinnedNotes = getState().notesLoaded.notesOthers.filter(
+        (note) => note._id !== id
+      );
+      //push the new Unpinned note i.e; tempNote to NotesPinned
+      tempNewPinnedNotes = getState().notesLoaded.notesPinned;
+      tempNewPinnedNotes.push(tempNote);
+      ///prepare the payload
+      const payload = {
+        notesPinned: tempNewPinnedNotes,
+        notesOthers: tempNewUnPinnedNotes,
+      };
+      //dispatch the LOAD_NOTES ACTION
+      dispatch({
+        type: LOAD_NOTES_SUCCESS,
+        payload: payload,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: PIN_NOTES_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

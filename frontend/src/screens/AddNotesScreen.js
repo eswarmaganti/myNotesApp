@@ -37,7 +37,7 @@ const AddNotesScreen = () => {
         history.push("/app/dashboard");
       }, 3000);
     }
-  }, [message]);
+  }, [message, history, dispatch]);
 
   const handleCreateNote = (e) => {
     e.preventDefault();

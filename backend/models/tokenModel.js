@@ -18,9 +18,10 @@ const tokenSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  isExpired: {
-    type: Boolean,
-    default: false,
+  expire_at: {
+    type: Date,
+    default: Date.now,
+    expires: 300,
   },
 });
 

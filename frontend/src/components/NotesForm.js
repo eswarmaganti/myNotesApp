@@ -2,7 +2,6 @@ import React from "react";
 import {
   Box,
   TextField,
-  Typography,
   makeStyles,
   FormControl,
   FormControlLabel,
@@ -11,7 +10,7 @@ import {
   FormLabel,
   Button,
 } from "@material-ui/core";
-import { Description, SendRounded } from "@material-ui/icons";
+import { SendRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => {
   return {

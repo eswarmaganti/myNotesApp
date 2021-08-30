@@ -4,7 +4,6 @@ import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
-import { response } from "express";
 
 //@desc    Auth User & get Token
 //@route    POST /api/user/login
@@ -145,7 +144,6 @@ export const getVerificationCode = asyncHandler(async (req, res) => {
       const existedToken = await Token.findOne({
         userId: _id,
         isVerified: false,
-        isExpired: false,
       });
 
       if (existedToken) {
@@ -231,13 +229,12 @@ export const validateVerificationCode = asyncHandler(async (req, res) => {
 
       const tokenData = await Token.findOne({
         userId: _id,
-        isExpired: false,
         isVerified: false,
       });
 
       if (tokenData) {
         // checking whether document is present or not
-        if (!token.isExpired && !token.isVerified) {
+        if (!token.isVerified) {
           // checking token is not expired or verified
 
           if (tokenData.token === token) {
@@ -268,7 +265,9 @@ export const validateVerificationCode = asyncHandler(async (req, res) => {
         }
       } else {
         res.status(400);
-        throw new Error("Verification Code is Expired, please try again later");
+        throw new Error(
+          "Verification Code is alreadt verified, please try again later"
+        );
       }
     } else {
       res.status(404);
@@ -296,7 +295,6 @@ export const resetPassword = asyncHandler(async (req, res) => {
       // check for the verified feild in token model
       const token = await Token.findOne({
         userId: user._id,
-        isExpired: false,
         isVerified: true,
       });
 
@@ -321,14 +319,10 @@ export const resetPassword = asyncHandler(async (req, res) => {
           );
           if (updateduser) {
             //user update successful then expire the token
-            const deletedToken = await Token.findByIdAndUpdate(
-              {
-                _id: token._id,
-              },
-              {
-                isExpired: true,
-              }
-            );
+            const deletedToken = await Token.findOneAndDelete({
+              _id: token._id,
+              isVerified: true,
+            });
             if (deletedToken) {
               // if token deletion successful , send the success response
               res.status(200).json(`Password Reset Successful for ${email}`);

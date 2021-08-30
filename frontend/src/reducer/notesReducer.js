@@ -17,16 +17,31 @@ import {
   LOAD_NOTE_SUCCESS,
   CREATE_NOTES_CLEAR,
   EDIT_NOTES_CLEAR,
+  PIN_NOTES_REQUEST,
+  PIN_NOTES_SUCCESS,
+  PIN_NOTES_FAIL,
 } from "../constants/notesConstants";
 
-export const notesLoadReducer = (state = { notes: [] }, action) => {
+export const notesLoadReducer = (
+  state = { notesPinned: [], notesOthers: [] },
+  action
+) => {
   switch (action.type) {
     case LOAD_NOTES_REQUEST:
-      return { loading: true };
+      return { loading: true, notesPinned: [], notesOthers: [] };
     case LOAD_NOTES_SUCCESS:
-      return { loading: false, notes: action.payload };
+      return {
+        loading: false,
+        notesOthers: action.payload.notesOthers,
+        notesPinned: action.payload.notesPinned,
+      };
     case LOAD_NOTES_FAIL:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+        notesPinned: [],
+        notesOthers: [],
+      };
     default:
       return state;
   }
@@ -86,6 +101,19 @@ export const deleteNotesReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case DELETE_NOTES_CLEAR:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const pinNotesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PIN_NOTES_REQUEST:
+      return { loading: true };
+    case PIN_NOTES_SUCCESS:
+      return { loading: false, message: action.payload };
+    case PIN_NOTES_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

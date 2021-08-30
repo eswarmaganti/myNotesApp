@@ -5,6 +5,7 @@ import {
   updateNotes,
   deleteNotes,
   getANotes,
+  pinNotes,
 } from "../controllers/notesController.js";
 import protect from "../middleware/authMiddleware.js";
 
@@ -15,6 +16,7 @@ router
   .get("/:id", protect, getANotes)
   .post("/", protect, createNotes)
   .patch("/:id", protect, updateNotes)
-  .delete("/:id", protect, deleteNotes);
+  .delete("/:id", protect, deleteNotes)
+  .patch("/pin/:id", protect, pinNotes);
 
 export default router;

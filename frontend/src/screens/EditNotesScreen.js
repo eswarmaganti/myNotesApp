@@ -51,7 +51,7 @@ const EditNotesScreen = () => {
         history.push("/app/dashboard");
       }, 3000);
     }
-  }, [notesData]);
+  }, [notesData, id, dispatch, history, message]);
 
   const handleEditNotes = (e) => {
     e.preventDefault();

@@ -16,7 +16,7 @@ connectDb();
 app.use(express.json());
 
 //token schedular
-tokenSchedular();
+// tokenSchedular();
 //user routes
 app.use("/api/user", userRouter);
 
