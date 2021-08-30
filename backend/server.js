@@ -15,8 +15,13 @@ connectDb();
 
 app.use(express.json());
 
-//token schedular
-// tokenSchedular();
+//to serve static files
+const path = require("path");
+app.use(express.static(path.join(__dirname, "frontend", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+});
+
 //user routes
 app.use("/api/user", userRouter);
 
