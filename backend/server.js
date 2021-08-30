@@ -29,9 +29,9 @@ app.use(errroHanlder);
 
 //to serve static files
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
-app.use(express.static(path.join(__dirname, "frontend", "build")));
+app.use(express.static("frontend/build"));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
 });
 const PORT = process.env.PORT || 5000;
 
