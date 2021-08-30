@@ -125,7 +125,7 @@ const UpdatePasswordScreen = () => {
         confirmNewPassword !== newPassword
       )
     ) {
-      dispatch(updatePassword(password, newPassword));
+      dispatch(updatePassword(password.trim(), newPassword.trim()));
     }
   };
   return (

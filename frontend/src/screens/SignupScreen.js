@@ -125,7 +125,7 @@ const SignupScreen = () => {
         confirmPassword !== password
       )
     ) {
-      dispatch(register(name, email, password));
+      dispatch(register(name.trim(), email.trim(), password.trim()));
     }
   };
 

@@ -20,6 +20,15 @@ app.use("/api/user", userRouter);
 //notes routes
 app.use("/api/notes", notesRouter);
 
+//to serve static files
+const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
+
 //middleware for handling 404 requests
 app.use(notFound);
 
@@ -27,15 +36,12 @@ app.use(notFound);
 
 app.use(errroHanlder);
 
-//to serve static files
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-app.use(express.static("frontend/build"));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-});
 const PORT = process.env.PORT || 5000;
 
 app.listen(
   PORT,
-  console.log(`Server Running on PORT ${PORT} Successfully`.green.bold)
+  console.log(
+    `Server Running in ${process.env.NODE_ENV} mode  on PORT ${PORT} Successfully`
+      .green.bold
+  )
 );

@@ -67,12 +67,12 @@ const ForgotPasswordScreen = ({ history }) => {
       !(email.length > 6 && !pattern.test(email))
     ) {
       // if verification code not sent then send the generate verification code request
-      dispatch(getVerificationCode(email));
+      dispatch(getVerificationCode(email.trim()));
     }
     //request for validation the verification code
     if (vcSent && !(vc === "" || vc.length !== 6)) {
       // verification code sent then submit the verification request
-      dispatch(validateVerificationCode(email, vc));
+      dispatch(validateVerificationCode(email.trim(), vc.trim()));
     }
   };
 

@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a525d938.chunk.css",
+    "main.js": "/static/js/main.f44407bf.chunk.js",
+    "main.js.map": "/static/js/main.f44407bf.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.8233b8b5.js",
+    "runtime-main.js.map": "/static/js/runtime-main.8233b8b5.js.map",
+    "static/js/2.d5f688ac.chunk.js": "/static/js/2.d5f688ac.chunk.js",
+    "static/js/2.d5f688ac.chunk.js.map": "/static/js/2.d5f688ac.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.a525d938.chunk.css.map": "/static/css/main.a525d938.chunk.css.map",
+    "static/js/2.d5f688ac.chunk.js.LICENSE.txt": "/static/js/2.d5f688ac.chunk.js.LICENSE.txt",
+    "static/media/editNoteIcon.b7e8b2a5.svg": "/static/media/editNoteIcon.b7e8b2a5.svg",
+    "static/media/hero.5f094642.svg": "/static/media/hero.5f094642.svg",
+    "static/media/login.91a062b8.svg": "/static/media/login.91a062b8.svg",
+    "static/media/logouticon.92c8631b.svg": "/static/media/logouticon.92c8631b.svg",
+    "static/media/pinOutlined.2c5463ed.svg": "/static/media/pinOutlined.2c5463ed.svg",
+    "static/media/pinRoundedFilled.7408230c.svg": "/static/media/pinRoundedFilled.7408230c.svg",
+    "static/media/resetpass.5c6c1ba2.svg": "/static/media/resetpass.5c6c1ba2.svg",
+    "static/media/settings.abc95f18.svg": "/static/media/settings.abc95f18.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8233b8b5.js",
+    "static/js/2.d5f688ac.chunk.js",
+    "static/css/main.a525d938.chunk.css",
+    "static/js/main.f44407bf.chunk.js"
+  ]
+}

@@ -94,7 +94,7 @@ const ResetPasswordScreen = ({ history }) => {
         confirmPassword !== password
       )
     ) {
-      dispatch(resetPasswordAction(email, password));
+      dispatch(resetPasswordAction(email.trim(), password.trim()));
     }
   };
 
