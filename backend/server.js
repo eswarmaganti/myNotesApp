@@ -5,7 +5,6 @@ import { notFound, errroHanlder } from "./middleware/errorMiddlewareHandler.js";
 import connectDb from "./config/connectDB.js";
 import userRouter from "./routes/userRouter.js";
 import notesRouter from "./routes/notesRouter.js";
-import { tokenSchedular } from "./utils/TokenSchedular.js";
 
 dotenv.config();
 const app = express();
@@ -14,13 +13,6 @@ const app = express();
 connectDb();
 
 app.use(express.json());
-
-//to serve static files
-const path = require("path");
-app.use(express.static(path.join(__dirname, "frontend", "build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
-});
 
 //user routes
 app.use("/api/user", userRouter);
@@ -35,6 +27,12 @@ app.use(notFound);
 
 app.use(errroHanlder);
 
+//to serve static files
+const path = require("path");
+app.use(express.static(path.join(__dirname, "frontend", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(
