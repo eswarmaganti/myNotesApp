@@ -30,12 +30,10 @@ const AddNotesScreen = () => {
 
   useEffect(() => {
     if (message) {
-      setTitle("");
-      setDescription("");
       setTimeout(() => {
         dispatch(clearNotesCreated());
         history.push("/app/dashboard");
-      }, 3000);
+      }, 1500);
     }
   }, [message, history, dispatch]);
 

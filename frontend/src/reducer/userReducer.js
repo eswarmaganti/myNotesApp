@@ -66,7 +66,11 @@ export const updateUserProfileReducer = (state = {}, action) => {
     case UPDATE_USER_PROFILE_REQUEST:
       return { loading: true };
     case UPDATE_USER_PROFILE_SUCCESS:
-      return { loading: false, message: action.payload };
+      return {
+        loading: false,
+        message: "User Profile Updated Successfully",
+        user: action.payload,
+      };
     case UPDATE_USER_PROFILE_FAIL:
       return { loading: false, error: action.payload };
     case UPDATE_USER_PROFILE_CLEAR:
@@ -80,7 +84,11 @@ export const updateUserPasswordReducer = (state = {}, action) => {
     case UPDATE_USER_PASSWORD_REQUEST:
       return { loading: true };
     case UPDATE_USER_PASSWORD_SUCCESS:
-      return { loading: false, message: action.payload };
+      return {
+        loading: false,
+        message: "Password Updated Successfully",
+        user: action.payload,
+      };
     case UPDATE_USER_PASSWORD_FAIL:
       return { loading: false, error: action.payload };
     case UPDATE_USER_PASSWORD_CLEAR:

@@ -4,7 +4,6 @@ import {
   registerUser,
   getUserProfile,
   updateUserProfile,
-  updateUserPassword,
   getVerificationCode,
   validateVerificationCode,
   resetPassword,
@@ -16,8 +15,7 @@ router
   .post("/login", loginUser)
   .post("/", registerUser)
   .get("/profile", protect, getUserProfile)
-  .patch("/updatePass/:id", protect, updateUserPassword)
-  .patch("/updateProfile/:id", protect, updateUserProfile)
+  .put("/profile", protect, updateUserProfile)
   .post("/getVerificationCode", getVerificationCode)
   .post("/validateVC", validateVerificationCode)
   .post("/resetPassword", resetPassword);

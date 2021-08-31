@@ -69,59 +69,34 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc     POSt Update User password
-//@route    POST /api/user/updatePass/:id
-//@access   private
-export const updateUserPassword = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const { password, newPassword } = req.body;
-  const user = await User.findOne({ email: req.user.email });
-
-  if (user && (await user.matchPassword(password))) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPwd = await bcrypt.hash(newPassword, salt);
-    const userUpdated = await User.findByIdAndUpdate(id, {
-      password: hashedPwd,
-    });
-
-    if (userUpdated) {
-      res
-        .status(200)
-        .json(`Password updated request for ${req.user.email} success!!`);
-    } else {
-      throw new Error("Unable to update password, please try again alter!!");
-    }
-  } else {
-    throw new Error(`Invalid Password for ${req.user.email}`);
-  }
-});
-
-//@desc     POSt Update User Profile
-//@route    POST /api/user/updateProfile/:id
+//@desc     PUT Update User Profile
+//@route    PUT /api/user/profile
 //@access   private
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { name, password, bio, location } = req.body;
+  const { _id } = req.user;
 
-  const user = await User.findOne({ email: req.user.email });
+  const user = await User.findById({ _id });
+  if (user && (await user.matchPassword(req.body.password))) {
+    user.name = req.body.name || user.name;
+    user.bio = req.body.bio || user.bio;
+    user.location = req.body.location || user.location;
 
-  if (user && (await user.matchPassword(password))) {
-    const userUpdated = await User.findByIdAndUpdate(id, {
-      name,
-      bio,
-      location,
-    });
-
-    if (userUpdated) {
-      res
-        .status(200)
-        .json(`Profile updated request for ${req.user.email} success!!`);
-    } else {
-      throw new Error("Unable to update profile, please try again alter!!");
+    if (req.body.newPassword) {
+      user.password = req.body.newPassword;
     }
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      token: generateToken(updatedUser._id),
+      bio: updatedUser.bio,
+      location: updatedUser.location,
+    });
   } else {
-    throw new Error(`Invalid Password for ${req.user.email}`);
+    res.status(404);
+    throw new Error("User Not Found / Invalid Password !!");
   }
 });
 
